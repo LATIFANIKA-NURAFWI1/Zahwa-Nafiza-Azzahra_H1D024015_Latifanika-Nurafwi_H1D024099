@@ -124,9 +124,198 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: color-m
 .checks { display: grid; grid-template-columns: repeat(2, 1fr); gap: .35rem .75rem; }
 
 /* Modal */
-.modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: color-mix(in oklab, black 30%, transparent); padding: 1rem; }
-.modal.show { display: flex; }
-.modal-card { width: min(720px, 92vw); background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow); }
+.modal { 
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center; 
+  background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6)); 
+  padding: 1rem; z-index: 11000; 
+  backdrop-filter: blur(8px);
+}
+.modal.show { display: flex; animation: modalFadeIn 0.3s ease-out; }
+.modal-card { 
+  position: relative; overflow: visible;
+  width: min(720px, 92vw); max-height: min(86vh, 800px); 
+  background: linear-gradient(135deg, var(--surface), color-mix(in oklab, var(--surface) 95%, var(--primary)));
+  color: var(--text); border: 2px solid color-mix(in oklab, var(--primary) 20%, transparent); 
+  border-radius: 24px; padding: 2rem; 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 8px 32px rgba(76,175,80,0.1);
+  transform: scale(0.95); animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Modern onboarding styling */
+.modal-card h2 {
+  font-size: 2rem; font-weight: 800; margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, var(--primary), #2E7D32);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; text-align: center;
+}
+
+.modal-card .muted {
+  font-size: 1.1rem; text-align: center; margin-bottom: 1.5rem;
+  color: color-mix(in oklab, var(--text) 80%, transparent);
+}
+
+.bullets {
+  list-style: none; padding: 0; margin: 1.5rem 0;
+  display: grid; gap: 1rem;
+}
+
+.bullets li {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1rem; background: color-mix(in oklab, var(--primary) 8%, var(--surface));
+  border-radius: 16px; border-left: 4px solid var(--primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bullets li:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px color-mix(in oklab, var(--primary) 15%, transparent);
+}
+
+.bullets li::before {
+  content: "✨"; font-size: 1.2rem; flex-shrink: 0;
+}
+
+.bullets li strong {
+  color: var(--primary); font-weight: 700;
+}
+
+/* Modern form styling for modal */
+.modal-card .form-row {
+  margin-bottom: 1.5rem;
+}
+
+.modal-card .form-row label {
+  font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem;
+  color: var(--text); display: block;
+}
+
+.modal-card input, .modal-card select {
+  padding: 1rem; border-radius: 16px; font-size: 1rem;
+  border: 2px solid color-mix(in oklab, var(--border) 60%, transparent);
+  background: var(--surface); transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.modal-card input:focus, .modal-card select:focus {
+  border-color: var(--primary); 
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 15%, transparent),
+              0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+.modal-card .actions {
+  margin-top: 2rem; text-align: center;
+}
+
+.modal-card .btn-primary {
+  padding: 1rem 2rem; font-size: 1.1rem; font-weight: 700;
+  border-radius: 16px; border: none;
+  background: linear-gradient(135deg, var(--primary), #2E7D32);
+  color: white; cursor: pointer;
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--primary) 30%, transparent);
+  transition: all 0.3s ease;
+}
+
+.modal-card .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px color-mix(in oklab, var(--primary) 40%, transparent);
+}
+
+/* Add decorative elements */
+.modal-card::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, var(--primary), #2E7D32, var(--energy));
+  border-radius: 26px;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+
+/* Add floating particles effect */
+.modal-card::after {
+  content: "🚭 💪 🎯";
+  position: absolute;
+  top: -20px; right: -20px;
+  font-size: 1.5rem;
+  opacity: 0.6;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Enhanced grid layout for form */
+.modal-card .grid.gap {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .modal-card .grid.gap {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .modal-card .grid.gap .form-row:last-of-type,
+  .modal-card .grid.gap .actions {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Dark mode enhancements */
+[data-theme="dark"] .modal-card h2 {
+  background: linear-gradient(135deg, var(--primary), #81C784);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .bullets li {
+  background: color-mix(in oklab, var(--primary) 12%, var(--surface));
+  border-left-color: var(--primary);
+}
+
+[data-theme="dark"] .modal-card::after {
+  opacity: 0.8;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .modal-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+    margin: 0.5rem;
+  }
+  
+  .modal-card h2 {
+    font-size: 1.6rem;
+  }
+  
+  .bullets li {
+    padding: 0.8rem;
+  }
+  
+  .modal-card .btn-primary {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+/* Lock background scroll when modal visible */
+body.modal-open { overflow: hidden; }
 
 /* Toast */
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: .55rem .9rem; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: opacity 200ms ease, transform 200ms ease; }

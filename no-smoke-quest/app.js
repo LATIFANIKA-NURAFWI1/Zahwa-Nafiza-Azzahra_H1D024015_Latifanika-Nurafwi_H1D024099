@@ -215,6 +215,7 @@
     if (!state.startDate) {
       // Show onboarding
       el.onboarding.classList.add('show');
+      document.body.classList.add('modal-open');
       el.app.classList.add('hidden');
       // Prefill defaults
       const todayKey = toKey(new Date());
@@ -223,6 +224,7 @@
       el.onbTheme.value = state.settings.theme || 'light';
     } else {
       el.onboarding.classList.remove('show');
+      document.body.classList.remove('modal-open');
       el.app.classList.remove('hidden');
       renderDashboard();
     }
@@ -245,6 +247,7 @@
       saveState();
       setTheme(theme);
       el.onboarding.classList.remove('show');
+      document.body.classList.remove('modal-open');
       el.app.classList.remove('hidden');
       showToast('Onboarding selesai. Semangat memulai perjalanan bebas asap!');
       renderDashboard();
@@ -300,6 +303,7 @@
       const target = evt.target;
       if (target && target.hasAttribute && target.hasAttribute('data-close-complete')) {
         el.completeModal.classList.remove('show');
+        document.body.classList.remove('modal-open');
       }
     });
 
@@ -511,6 +515,7 @@
     el.compPoints.textContent = String(state.totalPoints || 0);
     el.compSavings.textContent = formatCurrency(stats.savings);
     el.completeModal.classList.add('show');
+    document.body.classList.add('modal-open');
   }
 
   // ===== Share / Export / Import =====

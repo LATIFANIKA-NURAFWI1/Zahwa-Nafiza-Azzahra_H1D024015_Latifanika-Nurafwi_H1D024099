@@ -4,18 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nafas Baru</title>
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font: Inter + Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Icons: Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfK1D+3f8dS+Jz7v4S3v71S6uEJkP1wz6aS3yWQYh9y5G7S3vZP5o9TA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <!-- App CSS -->
   <link rel="stylesheet" href="assets/css/nafasbaru.css" />
 </head>
+
 <body class="font-[Inter] bg-[#FFF8E7] dark:bg-[#0b1020]">
+  
   <!-- Header -->
   <header class="grad-header sticky top-0 z-50 shadow">
     <div class="container-max flex items-center justify-between py-3">
@@ -24,13 +21,35 @@
         <span class="logo-text font-[Poppins]">Nafas Baru</span>
       </a>
       <nav class="hidden md:flex items-center gap-2 text-sm" id="navDesktop">
-        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#home"><i class="fa-solid fa-house mr-2"></i>Home</a>
-        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#fitur"><i class="fa-solid fa-shapes mr-2"></i>Fitur</a>
-        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#challenge"><i class="fa-solid fa-flag-checkered mr-2"></i>Challenge</a>
-        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#kesehatan"><i class="fa-solid fa-heart-pulse mr-2"></i>Kesehatan</a>
-        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#finansial"><i class="fa-solid fa-sack-dollar mr-2"></i>Finansial</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#home" action="showpages('home')" ><i class="fa-solid fa-house mr-2"></i>Home</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#fitur" action="showpages('fitur')"><i class="fa-solid fa-shapes mr-2"></i>Fitur</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#challenge" action="showpages('challenge')"><i class="fa-solid fa-flag-checkered mr-2"></i>Challenge</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#kesehatan" action="showpages('kesehatan')"><i class="fa-solid fa-heart-pulse mr-2"></i>Kesehatan</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#finansial" action="showpages('finansial')"><i class="fa-solid fa-sack-dollar mr-2"></i>Finansial</a>
       </nav>
       <div class="flex items-center gap-2">
+        <!-- Login Section -->
+        <div id="authSection" class="hidden md:flex items-center gap-2">
+          <button id="loginBtn" class="px-4 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white text-sm font-medium transition-all duration-200">
+            <i class="fa-solid fa-sign-in-alt mr-2"></i>Masuk
+          </button>
+          <button id="registerBtn" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium transition-all duration-200">
+            <i class="fa-solid fa-user-plus mr-2"></i>Daftar
+          </button>
+        </div>
+        <button id="logoutBtn" class="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white" title="Keluar">
+          <i class="fa-solid fa-sign-out-alt"></i>Logout
+        </button> 
+        <!-- User Profile (when logged in) -->
+        <div id="userSection" class="hidden md:flex items-center gap-2">
+          <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/15">
+            <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-sm font-semibold" id="userAvatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <span id="userName" class="text-white text-sm font-medium">User</span>
+          </div>
+          
+        </div>
         <button id="darkToggle" class="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25" title="Dark mode" aria-label="Toggle theme">
           <span class="theme-icon" data-theme="light">🌙</span>
           <span class="theme-icon hidden" data-theme="dark">☀️</span>
@@ -45,6 +64,29 @@
         <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#challenge">Challenge</a>
         <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#kesehatan">Kesehatan</a>
         <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#finansial">Finansial</a>
+        <div class="border-t border-white/20 mt-2 pt-2">
+          <!-- Mobile Auth Section -->
+          <div id="mobileAuthSection" class="flex flex-col gap-2">
+            <button id="mobileLoginBtn" class="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white text-sm font-medium">
+              <i class="fa-solid fa-sign-in-alt mr-2"></i>Masuk
+            </button>
+            <button id="mobileRegisterBtn" class="px-3 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium">
+              <i class="fa-solid fa-user-plus mr-2"></i>Daftar
+            </button>
+          </div>
+          <!-- Mobile User Section -->
+          <div id="mobileUserSection" class="hidden flex-col gap-2">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/15">
+              <div class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-semibold" id="mobileUserAvatar">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <span id="mobileUserName" class="text-white text-sm font-medium">User</span>
+            </div>
+            <button id="mobileLogoutBtn" class="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25 text-white text-sm">
+              <i class="fa-solid fa-sign-out-alt mr-2"></i>Keluar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -279,6 +321,116 @@
       <p class="text-xs text-slate-500 mt-4">Disclaimer: Informasi di situs ini bersifat edukasi dan bukan pengganti nasihat medis profesional.</p>
     </div>
   </section>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Masuk</h2>
+            <button id="closeLoginModal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+              <i class="fa-solid fa-times text-xl"></i>
+            </button>
+          </div>
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-envelope mr-2"></i>Email
+              </label>
+              <input id="loginEmail" type="email" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-lock mr-2"></i>Password
+              </label>
+              <input id="loginPassword" type="password" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="flex items-center">
+                <input type="checkbox" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">Ingat saya</span>
+              </label>
+              <a href="#" class="text-sm text-emerald-600 hover:text-emerald-700">Lupa password?</a>
+            </div>
+            <button type="submit" class="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors">
+              <i class="fa-solid fa-sign-in-alt mr-2"></i>Masuk
+            </button>
+          </form>
+          <div class="mt-6 text-center">
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              Belum punya akun? 
+              <button id="switchToRegister" class="text-emerald-600 hover:text-emerald-700 font-semibold">Daftar sekarang</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Daftar</h2>
+            <button id="closeRegisterModal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+              <i class="fa-solid fa-times text-xl"></i>
+            </button>
+          </div>
+          <form id="registerForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-user mr-2"></i>Nama Lengkap
+              </label>
+              <input id="registerName" type="text" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-envelope mr-2"></i>Email
+              </label>
+              <input id="registerEmail" type="email" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-lock mr-2"></i>Password
+              </label>
+              <input id="registerPassword" type="password" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <i class="fa-solid fa-lock mr-2"></i>Konfirmasi Password
+              </label>
+              <input id="registerConfirmPassword" type="password" required 
+                class="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+            </div>
+            <div class="flex items-start">
+              <input type="checkbox" required class="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+              <span class="ml-2 text-sm text-slate-600 dark:text-slate-400">
+                Saya setuju dengan <a href="#" class="text-emerald-600 hover:text-emerald-700">Syarat & Ketentuan</a> 
+                dan <a href="#" class="text-emerald-600 hover:text-emerald-700">Kebijakan Privasi</a>
+              </span>
+            </div>
+            <button type="submit" class="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors">
+              <i class="fa-solid fa-user-plus mr-2"></i>Daftar
+            </button>
+          </form>
+          <div class="mt-6 text-center">
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              Sudah punya akun? 
+              <button id="switchToLogin" class="text-emerald-600 hover:text-emerald-700 font-semibold">Masuk sekarang</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="py-8 text-center text-xs text-slate-500">© <span id="year"></span> NafasBaru</footer>
 
@@ -578,6 +730,189 @@
       });
     }
 
+    // ===== Authentication System =====
+    function initAuth(){
+      // Check if user is logged in
+      const user = store.get('nb_user', null);
+      const authToken = store.get('nb_auth_token', null);
+      
+      if (user && authToken) {
+        showUserLoggedIn(user);
+      } else {
+        showUserLoggedOut();
+      }
+
+      // Modal controls
+      const loginModal = $('#loginModal');
+      const registerModal = $('#registerModal');
+      
+      // Desktop buttons
+      $('#loginBtn')?.addEventListener('click', () => showModal(loginModal));
+      $('#registerBtn')?.addEventListener('click', () => showModal(registerModal));
+      $('#logoutBtn')?.addEventListener('click', () => window.location.href = 'modern-login/logout.php');
+      
+      // Mobile buttons
+      $('#mobileLoginBtn')?.addEventListener('click', () => showModal(loginModal));
+      $('#mobileRegisterBtn')?.addEventListener('click', () => showModal(registerModal));
+      $('#mobileLogoutBtn')?.addEventListener('click', () => window.location.href = 'modern-login/logout.php');
+      
+      // Modal close buttons
+      $('#closeLoginModal')?.addEventListener('click', () => hideModal(loginModal));
+      $('#closeRegisterModal')?.addEventListener('click', () => hideModal(registerModal));
+      
+      // Switch between modals
+      $('#switchToRegister')?.addEventListener('click', () => {
+        hideModal(loginModal);
+        showModal(registerModal);
+      });
+      $('#switchToLogin')?.addEventListener('click', () => {
+        hideModal(registerModal);
+        showModal(loginModal);
+      });
+      
+      // Close modal on backdrop click
+      [loginModal, registerModal].forEach(modal => {
+        modal?.addEventListener('click', (e) => {
+          if (e.target === modal) hideModal(modal);
+        });
+      });
+      
+      // Form submissions
+      $('#loginForm')?.addEventListener('submit', handleLogin);
+      $('#registerForm')?.addEventListener('submit', handleRegister);
+    }
+
+    function showModal(modal) {
+      modal?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal(modal) {
+      modal?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function showUserLoggedIn(user) {
+      // Hide auth buttons, show user section
+      $('#authSection')?.classList.add('hidden');
+      $('#userSection')?.classList.remove('hidden');
+      $('#mobileAuthSection')?.classList.add('hidden');
+      $('#mobileUserSection')?.classList.remove('hidden');
+      $('#mobileUserSection')?.classList.add('flex');
+      
+      // Update user display
+      const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+      $('#userAvatar').textContent = initials;
+      $('#userName').textContent = user.name;
+      $('#mobileUserAvatar').textContent = initials;
+      $('#mobileUserName').textContent = user.name;
+    }
+
+    function showUserLoggedOut() {
+      // Show auth buttons, hide user section
+      $('#authSection')?.classList.remove('hidden');
+      $('#userSection')?.classList.add('hidden');
+      $('#mobileAuthSection')?.classList.remove('hidden');
+      $('#mobileUserSection')?.classList.add('hidden');
+      $('#mobileUserSection')?.classList.remove('flex');
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = $('#loginEmail').value.trim();
+      const password = $('#loginPassword').value;
+      
+      if (!email || !password) {
+        showToast('⚠️ Mohon isi semua field');
+        return;
+      }
+
+      // Simulate API call - replace with actual backend integration
+      try {
+        // For demo purposes, accept any email/password combination
+        const userData = {
+          id: Date.now(),
+          name: email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+          email: email,
+          joinDate: new Date().toISOString()
+        };
+        
+        const authToken = 'demo_token_' + Date.now();
+        
+        // Store user data
+        store.set('nb_user', userData);
+        store.set('nb_auth_token', authToken);
+        
+        showUserLoggedIn(userData);
+        hideModal($('#loginModal'));
+        showToast('✅ Berhasil masuk! Selamat datang, ' + userData.name);
+        
+        // Reset form
+        $('#loginForm').reset();
+        
+      } catch (error) {
+        showToast('❌ Gagal masuk. Silakan coba lagi.');
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const name = $('#registerName').value.trim();
+      const email = $('#registerEmail').value.trim();
+      const password = $('#registerPassword').value;
+      const confirmPassword = $('#registerConfirmPassword').value;
+      
+      if (!name || !email || !password || !confirmPassword) {
+        showToast('⚠️ Mohon isi semua field');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showToast('⚠️ Password tidak cocok');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showToast('⚠️ Password minimal 6 karakter');
+        return;
+      }
+
+      // Simulate API call - replace with actual backend integration
+      try {
+        const userData = {
+          id: Date.now(),
+          name: name,
+          email: email,
+          joinDate: new Date().toISOString()
+        };
+        
+        const authToken = 'demo_token_' + Date.now();
+        
+        // Store user data
+        store.set('nb_user', userData);
+        store.set('nb_auth_token', authToken);
+        
+        showUserLoggedIn(userData);
+        hideModal($('#registerModal'));
+        showToast('✅ Akun berhasil dibuat! Selamat datang, ' + userData.name);
+        
+        // Reset form
+        $('#registerForm').reset();
+        
+      } catch (error) {
+        showToast('❌ Gagal membuat akun. Silakan coba lagi.');
+      }
+    }
+
+    function logout() {
+      // Clear user data
+      store.set('nb_user', null);
+      store.set('nb_auth_token', null);
+      
+      showUserLoggedOut();
+      showToast('👋 Anda telah keluar');
+    }
+
     // Init
     document.getElementById('year').textContent = new Date().getFullYear();
     if (document.getElementById('durationWrap')) { renderDur(); updateChallengeUI(); }
@@ -585,6 +920,7 @@
     setActiveLink();
     initContactForm();
     renderHealth();
+    initAuth();
   </script>
 </body>
 </html>
