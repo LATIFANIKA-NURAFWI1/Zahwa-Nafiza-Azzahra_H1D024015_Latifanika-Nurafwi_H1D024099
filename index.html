@@ -4,15 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nafas Baru</title>
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font: Inter + Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Icons: Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfK1D+3f8dS+Jz7v4S3v71S6uEJkP1wz6aS3yWQYh9y5G7S3vZP5o9TA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <!-- App CSS -->
   <link rel="stylesheet" href="assets/css/nafasbaru.css" />
 </head>
 <body class="font-[Inter] bg-[#FFF8E7] dark:bg-[#0b1020]">
@@ -280,51 +275,6 @@
   </section>
   <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-emerald-500 text-white shadow hidden">Berhasil</div>
 
-  <!-- News -->
-  <section id="news" class="container-max py-14 hidden">
-    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">Berita & Edukasi</h2>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Card template -->
-      <a target="_blank" href="https://www.who.int/health-topics/tobacco" class="group surface card overflow-hidden reveal">
-        <div class="h-40 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1520975922215-c096cde6b9ee?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="WHO">
-        </div>
-        <div class="p-5">
-          <div class="font-semibold text-slate-800 dark:text-slate-100">WHO: Tobacco</div>
-          <div class="text-sm text-slate-500">Sumber: WHO</div>
-        </div>
-      </a>
-      <a target="_blank" href="https://www.kemkes.go.id/" class="group surface card overflow-hidden reveal">
-        <div class="h-40 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="Kemenkes">
-        </div>
-        <div class="p-5">
-          <div class="font-semibold text-slate-800 dark:text-slate-100">Kemenkes: Bahaya Merokok</div>
-          <div class="text-sm text-slate-500">Sumber: Kemenkes</div>
-        </div>
-      </a>
-      <a target="_blank" href="https://www.cdc.gov/tobacco/" class="group surface card overflow-hidden reveal">
-        <div class="h-40 overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="CDC">
-        </div>
-        <div class="p-5">
-          <div class="font-semibold text-slate-800 dark:text-slate-100">CDC: Smoking & Tobacco</div>
-          <div class="text-sm text-slate-500">Sumber: CDC</div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="container-max py-14 hidden">
-    <div class="surface card p-6 reveal">
-      <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">Kontak</h2>
-      <p>Email: <a href="mailto:support@nafasbaru.app" class="text-sky-600">support@nafasbaru.app</a></p>
-      <p>Instagram: <a href="https://instagram.com/nafasbaru" target="_blank" class="text-sky-600">@nafasbaru</a></p>
-      <p class="text-xs text-slate-500 mt-4">Disclaimer: Informasi di situs ini bersifat edukasi dan bukan pengganti nasihat medis profesional.</p>
-    </div>
-  </section>
-
   <!-- Login Modal -->
   <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
     <div class="flex items-center justify-center min-h-screen p-4">
@@ -436,8 +386,6 @@
   </div>
 
   <footer class="py-8 text-center text-xs text-slate-500">© <span id="year"></span> NafasBaru</footer>
-
-  <!-- Motivational Modal removed -->
 
   <script>
     // Helpers
