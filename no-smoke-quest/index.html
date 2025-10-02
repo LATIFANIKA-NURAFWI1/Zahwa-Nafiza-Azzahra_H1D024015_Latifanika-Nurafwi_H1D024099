@@ -1,13 +1,4 @@
-<!--
-  No Smoke Quest — 30 Hari Bebas Asap
-  README singkat:
-  - Buka file ini (index.html) langsung di browser modern untuk menjalankan aplikasi.
-  - Data Anda disimpan di localStorage (key: noSmokeQuestData).
-  - Atur tanggal mulai dan harga rokok di onboarding saat pertama kali.
-  - Fitur: Log Harian, Level & Poin, Badge, Tabungan, Export/Import, Share, Reset.
-  - File lain: styles.css (semua styling), app.js (semua logika & state management).
-  - Tidak membutuhkan framework atau library eksternal.
--->
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -35,38 +26,7 @@
     </div>
   </header>
 
-  <!-- Onboarding Modal -->
-  <section id="onboarding" class="modal" role="dialog" aria-modal="true" aria-labelledby="onbTitle" aria-describedby="onbDesc">
-    <div class="modal-card">
-      <h2 id="onbTitle">Selamat Datang di No Smoke Quest</h2>
-      <p id="onbDesc" class="muted">Ikuti tantangan 30 hari untuk berhenti merokok. Kumpulkan poin, raih badge, dan tabung uang rokok.</p>
-      <ul class="bullets">
-        <li><strong>Level & Poin:</strong> Selesaikan level mingguan dan dapatkan poin bonus.</li>
-        <li><strong>Log Harian:</strong> Catat rokok, mood, dan aktivitas pengganti.</li>
-        <li><strong>Tabungan:</strong> Tiap hari tanpa rokok menambah tabungan.</li>
-      </ul>
-      <form id="onboardingForm" class="grid gap">
-        <div class="form-row">
-          <label for="onbStartDate">Tanggal Mulai</label>
-          <input id="onbStartDate" type="date" required aria-required="true" />
-        </div>
-        <div class="form-row">
-          <label for="onbPrice">Harga per batang rokok</label>
-          <input id="onbPrice" type="number" min="0" step="100" placeholder="contoh: 2000" required aria-required="true" />
-        </div>
-        <div class="form-row">
-          <label for="onbTheme">Tema</label>
-          <select id="onbTheme">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-        <div class="actions">
-          <button type="submit" class="btn btn-primary">Mulai Challenge</button>
-        </div>
-      </form>
-    </div>
-  </section>
+ 
 
   <main id="app" class="hidden" role="main">
     <!-- Dashboard -->
