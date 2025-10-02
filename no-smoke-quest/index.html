@@ -1,180 +1,590 @@
-
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="id" class="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>No Smoke Quest — 30 Hari Bebas Asap</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nafas Baru</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font: Inter + Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Icons: Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfK1D+3f8dS+Jz7v4S3v71S6uEJkP1wz6aS3yWQYh9y5G7S3vZP5o9TA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- App CSS -->
+  <link rel="stylesheet" href="assets/css/nafasbaru.css" />
 </head>
-<body>
-  <noscript>
-    <div class="noscript">Aplikasi ini membutuhkan JavaScript agar dapat berjalan.</div>
-  </noscript>
-
-  <header class="app-header" role="banner">
-    <div class="container header-inner">
-      <h1 class="brand" aria-label="Judul aplikasi">No Smoke Quest</h1>
-      <nav class="header-actions" aria-label="Aksi utama">
-        <button id="btnLogToday" class="btn btn-primary">Log Hari Ini</button>
-        <button id="btnShare" class="btn" title="Bagikan progres">Bagikan</button>
-        <button id="btnExport" class="btn" title="Export data">Export</button>
-        <label for="inputImport" class="btn" title="Import data">Import</label>
-        <input id="inputImport" type="file" accept="application/json" class="sr-only" aria-label="Pilih berkas JSON untuk diimport" />
-        <button id="btnReset" class="btn btn-danger" title="Reset challenge">Reset</button>
+<body class="font-[Inter] bg-[#FFF8E7] dark:bg-[#0b1020]">
+  <!-- Header -->
+  <header class="grad-header sticky top-0 z-50 shadow">
+    <div class="container-max flex items-center justify-between py-3">
+      <a href="#home" class="flex items-center gap-3 logo">
+        <img src="assets/images/logo.png" alt="Logo Nafas Baru" class="logo-img" />
+        <span class="logo-text font-[Poppins]">Nafas Baru</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-2 text-sm" id="navDesktop">
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#home"><i class="fa-solid fa-house mr-2"></i>Home</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#fitur"><i class="fa-solid fa-shapes mr-2"></i>Fitur</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#challenge"><i class="fa-solid fa-flag-checkered mr-2"></i>Challenge</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#kesehatan"><i class="fa-solid fa-heart-pulse mr-2"></i>Kesehatan</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#finansial"><i class="fa-solid fa-sack-dollar mr-2"></i>Finansial</a>
       </nav>
+      <div class="flex items-center gap-2">
+        <button id="darkToggle" class="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25" title="Dark mode" aria-label="Toggle theme">
+          <span class="theme-icon" data-theme="light">🌙</span>
+          <span class="theme-icon hidden" data-theme="dark">☀️</span>
+        </button>
+        <button id="menuBtn" class="md:hidden px-3 py-2 rounded-lg bg-white/15" aria-controls="mobileMenu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/20 mobile-panel">
+      <div class="container-max py-2 flex flex-col">
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#home">Home</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#fitur">Fitur</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#challenge">Challenge</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#kesehatan">Kesehatan</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="#finansial">Finansial</a>
+      </div>
     </div>
   </header>
 
- 
-
-  <main id="app" class="hidden" role="main">
-    <!-- Dashboard -->
-    <section class="section" id="dashboard" aria-labelledby="dashTitle">
-      <div class="container">
-        <h2 id="dashTitle" class="section-title">Dashboard</h2>
-        <div class="grid metrics">
-          <div class="metric">
-            <div class="metric-label">Hari Challenge</div>
-            <div class="metric-value"><span id="dayNow">1</span> / 30</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Level</div>
-            <div class="metric-value" id="levelNow">Level 1</div>
-            <div class="progress" aria-label="Progres menuju level berikutnya" aria-live="polite">
-              <div class="progress-bar" id="levelProgress" style="width: 0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  <!-- Hero -->
+  <section id="home" class="grad-hero">
+    <div class="container-max py-16 md:py-24 text-center text-slate-800 dark:text-slate-100">
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">Selamat Datang di Nafas Baru</h1>
+      <p class="mt-4 text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">Program interaktif berhenti merokok dengan challenge, hitung penghematan, serta timeline kesehatan yang memotivasi.</p>
+      <div class="mt-8 flex items-center justify-center gap-3">
+      </div>
+    </div>
+    <!-- Latar Belakang & Kontak di Landing -->
+    <div class="container-max pb-12">
+      <div class="surface card p-6 reveal">
+        <h3 class="text-2xl font-bold mb-2">Latar Belakang</h3>
+        <p class="text-slate-600 dark:text-slate-300">NafasBaru dibuat sebagai upaya untuk membantu masyarakat, khususnya generasi muda, dalam mengurangi dan menghentikan kebiasaan merokok. Melalui pendekatan challenge yang interaktif, edukasi kesehatan, serta tracking finansial dan kesehatan, kami berharap website ini dapat menjadi media motivasi dan perubahan positif.</p>
+      </div>
+      <!-- Team Profiles -->
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <div class="surface card p-6 reveal">
+          <div class="flex items-center gap-3">
+            <div class="h-12 w-12 rounded-full grad-secondary grid place-items-center text-slate-900 font-extrabold">Z</div>
+            <div>
+              <div class="font-semibold text-lg">Zahwa Nafiza Azzahra</div>
+              <div class="text-sm text-slate-500">NIM: H1D024015</div>
             </div>
           </div>
-          <div class="metric">
-            <div class="metric-label">Total Poin</div>
-            <div class="metric-value" id="pointsTotal">0</div>
-          </div>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Mahasiswa Informatika Universitas Jenderal Soedirman (Unsoed).</p>
         </div>
-
-        <div class="grid stats">
-          <div class="stat">
-            <div class="stat-label">Hari bebas asap</div>
-            <div class="stat-value" id="statsSmokeFree">0</div>
+        <div class="surface card p-6 reveal">
+          <div class="flex items-center gap-3">
+            <div class="h-12 w-12 rounded-full grad-secondary grid place-items-center text-slate-900 font-extrabold">L</div>
+            <div>
+              <div class="font-semibold text-lg">Latifanika Nurafwi</div>
+              <div class="text-sm text-slate-500">NIM: H1D024099</div>
+            </div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Tabungan (Rp)</div>
-            <div class="stat-value" id="statsSavings">0</div>
-            <button id="btnClaimSavings" class="btn xs">Gunakan</button>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Streak terpanjang</div>
-            <div class="stat-value" id="statsBestStreak">0</div>
-          </div>
-        </div>
-
-        <div class="badges-wrap">
-          <h3 class="sub-title">Badge</h3>
-          <div id="badgesList" class="badge-list" aria-live="polite"></div>
-        </div>
-
-        <div class="cta-row">
-          <button id="btnOpenLog" class="btn btn-primary">Log Hari Ini</button>
-          <button id="btnViewStats" class="btn">Lihat Statistik</button>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Mahasiswa Informatika Universitas Jenderal Soedirman (Unsoed).</p>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Log Harian -->
-    <section class="section" id="logSection" aria-labelledby="logTitle">
-      <div class="container">
-        <h2 id="logTitle" class="section-title">Log Harian</h2>
-        <form id="logForm" class="grid gap" aria-describedby="logHelp">
-          <p id="logHelp" class="muted">Isi log untuk hari ini. Jika tidak merokok, Anda akan mendapat poin dan tabungan.
-            Jika tidak merokok, Anda dapat mengisi perkiraan jumlah yang biasanya Anda habiskan untuk menghitung tabungan.</p>
-
-          <fieldset class="fieldset">
-            <legend class="legend">Apakah Anda merokok hari ini?</legend>
-            <label class="radio"><input type="radio" name="smoked" value="no" checked /> Tidak</label>
-            <label class="radio"><input type="radio" name="smoked" value="yes" /> Ya</label>
-          </fieldset>
-
-          <div class="form-row">
-            <label for="cigs">Jumlah rokok hari ini / biasanya</label>
-            <input id="cigs" type="number" min="0" step="1" placeholder="cth: 5" />
+    <!-- Kontak Section (anchor) -->
+    <div id="kontak" class="container-max pb-16">
+      <div class="surface card p-6 reveal">
+        <h3 class="text-3xl font-bold mb-2">Kontak Kami</h3>
+        <p class="text-slate-600 dark:text-slate-300">Jika Anda memiliki pertanyaan, saran, atau masukan terkait NafasBaru, silakan hubungi kami melalui form di bawah ini.</p>
+        <form id="contactForm" class="grid md:grid-cols-2 gap-4 mt-5">
+          <div class="col-span-1">
+            <label class="text-sm text-slate-500"><i class="fa-solid fa-user mr-2"></i>Nama</label>
+            <input id="cf_name" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" required />
           </div>
-
-          <div class="form-row">
-            <label for="mood">Mood</label>
-            <select id="mood">
-              <option>Happy</option>
-              <option selected>Neutral</option>
-              <option>Stress</option>
-              <option>Angry</option>
-            </select>
+          <div class="col-span-1">
+            <label class="text-sm text-slate-500"><i class="fa-solid fa-envelope mr-2"></i>Email</label>
+            <input id="cf_email" type="email" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" required />
           </div>
-
-          <fieldset class="fieldset">
-            <legend class="legend">Aktivitas pengganti (pilih yang dilakukan)</legend>
-            <div class="checks">
-              <label class="check"><input type="checkbox" value="water" /> Minum air</label>
-              <label class="check"><input type="checkbox" value="gum" /> Permen karet</label>
-              <label class="check"><input type="checkbox" value="walk" /> Jalan kaki</label>
-              <label class="check"><input type="checkbox" value="breath" /> Napas dalam</label>
-              <label class="check"><input type="checkbox" value="meditate" /> Meditasi</label>
-              <label class="check"><input type="checkbox" value="exercise" /> Olahraga</label>
-              <label class="check"><input type="checkbox" value="callFriend" /> Hubungi teman</label>
-              <label class="check"><input type="checkbox" value="journaling" /> Jurnal</label>
-            </div>
-          </fieldset>
-
-          <div class="form-row">
-            <label for="notes">Catatan (opsional)</label>
-            <textarea id="notes" rows="3" placeholder="Bagaimana harimu?"></textarea>
+          <div class="col-span-2">
+            <label class="text-sm text-slate-500"><i class="fa-solid fa-comment-dots mr-2"></i>Pesan</label>
+            <textarea id="cf_msg" rows="4" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" required></textarea>
           </div>
-
-          <label class="check">
-            <input id="shareToday" type="checkbox" /> Bagikan progres hari ini
-          </label>
-
-          <div class="actions">
-            <button type="submit" class="btn btn-primary">Simpan</button>
+          <div class="col-span-2 flex items-center gap-3">
+            <button class="px-5 py-3 rounded-xl grad-secondary text-white font-semibold" type="submit">Kirim</button>
+            <span id="cf_status" class="text-sm text-emerald-600 hidden">Terima kasih! Pesan Anda telah tersimpan.</span>
           </div>
         </form>
-      </div>
-    </section>
-
-    <!-- Stats (ringkas) -->
-    <section class="section" id="statsSection" aria-labelledby="statsTitle">
-      <div class="container">
-        <h2 id="statsTitle" class="section-title">Statistik</h2>
-        <div class="muted" id="statsSummary">Tidak ada data statistik yang tersedia.</div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Toasts -->
-  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- Completion Modal (Day 30) -->
-  <section id="completeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="compTitle" aria-describedby="compDesc">
-    <div class="modal-card">
-      <h2 id="compTitle">Selamat!</h2>
-      <p id="compDesc" class="muted">Anda menyelesaikan No Smoke Quest selama 30 hari. Luar biasa!</p>
-      <div class="grid metrics">
-        <div class="metric">
-          <div class="metric-label">Total Poin</div>
-          <div id="compPoints" class="metric-value">0</div>
-        </div>
-        <div class="metric">
-          <div class="metric-label">Total Tabungan</div>
-          <div id="compSavings" class="metric-value">0</div>
-        </div>
-      </div>
-      <div class="actions">
-        <button id="btnCertificate" class="btn btn-primary">Download Certificate</button>
-        <button data-close-complete class="btn">Tutup</button>
       </div>
     </div>
   </section>
 
-  <!-- Aksesibilitas: skip link -->
-  <a class="skip-link" href="#dashboard">Lewati ke Dashboard</a>
+  <!-- Guard Message -->
+  <div id="guardMsg" class="container-max mt-4 hidden">
+    <div class="surface card p-4 text-sm text-amber-700 bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:text-amber-300">
+      Halaman tidak tersedia kecuali dipilih dari menu. Anda dialihkan ke Home.
+    </div>
+  </div>
 
-  <script src="app.js" defer></script>
+  <!-- Fitur -->
+  <section id="fitur" class="container-max py-14">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-6">Fitur Utama</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="surface card p-6 reveal">
+        <div class="text-xl font-semibold mb-1"><i class="fa-solid fa-flag-checkered text-orange-400 mr-2"></i>Challenge Tracker</div>
+        <p class="text-slate-600 dark:text-slate-300">Durasi 1–30 hari, progress bar dinamis, dan badge milestone.</p>
+      </div>
+      <div class="surface card p-6 reveal">
+        <div class="text-xl font-semibold mb-1"><i class="fa-solid fa-sack-dollar text-emerald-400 mr-2"></i>Money Tracking</div>
+        <p class="text-slate-600 dark:text-slate-300">Hitung penghematan beserta grafik interaktif.</p>
+      </div>
+      <div class="surface card p-6 reveal">
+        <div class="text-xl font-semibold mb-1"><i class="fa-solid fa-heart-pulse text-sky-400 mr-2"></i>Health Tracking</div>
+        <p class="text-slate-600 dark:text-slate-300">Timeline pemulihan kesehatan dengan stepper animasi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Challenge -->
+  <section id="challenge" class="container-max py-14">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100">No Smoke Quest</h2>
+    </div>
+    <div class="surface card p-0 overflow-hidden reveal">
+      <iframe
+        title="No Smoke Quest"
+        src="no-smoke-quest/index.html"
+        class="w-full"
+        style="height: 70vh; border: 0; background: #fff7eb"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </section>
+
+  <!-- Finansial -->
+  <section id="finansial" class="container-max py-14">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">Money Tracking</h2>
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="surface card p-6 reveal">
+        <div class="grid gap-3">
+          <label class="text-sm text-slate-500">Batang per hari</label>
+          <input id="daily" type="number" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" placeholder="10">
+          <label class="text-sm text-slate-500">Harga per bungkus (IDR)</label>
+          <input id="price" type="number" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" placeholder="35000">
+          <label class="text-sm text-slate-500">Batang per bungkus</label>
+          <input id="cpp" type="number" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" value="20">
+          <label class="text-sm text-slate-500">Tanggal berhenti</label>
+          <input id="qdate" type="date" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <button id="calcBtn" class="mt-2 px-4 py-2 rounded-lg grad-secondary text-white font-semibold">Hitung & Simpan</button>
+        </div>
+      </div>
+      <div class="surface card p-6 reveal">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="surface card p-4">
+            <div class="text-slate-500">Hari sejak berhenti</div>
+            <div class="font-semibold" id="days">0</div>
+          </div>
+          <div class="surface card p-4">
+            <div class="text-slate-500">Estimasi hemat (IDR)</div>
+            <div class="font-semibold" id="saved">0</div>
+          </div>
+        </div>
+        <div class="mt-6">
+          <canvas id="moneyChart" height="140"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kesehatan (Minimal) -->
+  <section id="kesehatan" class="container-max py-14">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">Health Tracking</h2>
+    <div class="surface card p-6 reveal">
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <div>
+          <div class="text-sm text-slate-500">Kamu berhenti selama</div>
+          <div class="text-4xl font-extrabold text-slate-800 dark:text-slate-100"><span id="ht_days">0</span> hari</div>
+          <div class="mt-4 h-4 w-full rounded-full bg-[#FFF8E7] dark:bg-slate-700 overflow-hidden">
+            <div id="ht_bar" class="h-4" style="width:0%"></div>
+          </div>
+          <div class="grid grid-cols-3 gap-3 mt-4 text-xs">
+            <div class="surface card p-3 text-center">
+              <div class="text-slate-500">Hari Berhasil</div>
+              <div class="font-semibold text-slate-800 dark:text-slate-100" id="ht_success">0</div>
+            </div>
+            <div class="surface card p-3 text-center">
+              <div class="text-slate-500">Estimasi Hemat</div>
+              <div class="font-semibold text-slate-800 dark:text-slate-100" id="ht_saved">0</div>
+            </div>
+            <div class="surface card p-3 text-center">
+              <div class="text-slate-500">Target</div>
+              <div class="font-semibold text-slate-800 dark:text-slate-100" id="ht_target">30</div>
+            </div>
+          </div>
+          <button id="ht_update" class="mt-4 px-5 py-3 rounded-xl grad-secondary text-white font-semibold hover:opacity-95 transition inline-flex items-center gap-2">
+            <i class="fa-solid fa-circle-check"></i>
+            Update Progress Hari Ini
+          </button>
+        </div>
+        <div class="text-sm text-slate-600 dark:text-slate-300">
+          <div class="font-semibold mb-2">Hari Ini</div>
+          <div id="ht_message" class="mb-3">Mulai hari ini lebih baik.</div>
+          <div class="font-semibold mb-2">Tips Singkat</div>
+          <div id="ht_tip" class="text-slate-700 dark:text-slate-200 mb-4">Minum banyak air hari ini.</div>
+          <div class="font-semibold mb-2">Riwayat Progres</div>
+          <ul id="ht_log" class="list-disc ml-5 space-y-1 max-h-40 overflow-auto pr-2"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg bg-emerald-500 text-white shadow hidden">Berhasil</div>
+
+  <!-- News -->
+  <section id="news" class="container-max py-14 hidden">
+    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">Berita & Edukasi</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Card template -->
+      <a target="_blank" href="https://www.who.int/health-topics/tobacco" class="group surface card overflow-hidden reveal">
+        <div class="h-40 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1520975922215-c096cde6b9ee?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="WHO">
+        </div>
+        <div class="p-5">
+          <div class="font-semibold text-slate-800 dark:text-slate-100">WHO: Tobacco</div>
+          <div class="text-sm text-slate-500">Sumber: WHO</div>
+        </div>
+      </a>
+      <a target="_blank" href="https://www.kemkes.go.id/" class="group surface card overflow-hidden reveal">
+        <div class="h-40 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="Kemenkes">
+        </div>
+        <div class="p-5">
+          <div class="font-semibold text-slate-800 dark:text-slate-100">Kemenkes: Bahaya Merokok</div>
+          <div class="text-sm text-slate-500">Sumber: Kemenkes</div>
+        </div>
+      </a>
+      <a target="_blank" href="https://www.cdc.gov/tobacco/" class="group surface card overflow-hidden reveal">
+        <div class="h-40 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition" alt="CDC">
+        </div>
+        <div class="p-5">
+          <div class="font-semibold text-slate-800 dark:text-slate-100">CDC: Smoking & Tobacco</div>
+          <div class="text-sm text-slate-500">Sumber: CDC</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="container-max py-14 hidden">
+    <div class="surface card p-6 reveal">
+      <h2 class="text-2xl font-bold mb-2 text-slate-800 dark:text-slate-100">Kontak</h2>
+      <p>Email: <a href="mailto:support@nafasbaru.app" class="text-sky-600">support@nafasbaru.app</a></p>
+      <p>Instagram: <a href="https://instagram.com/nafasbaru" target="_blank" class="text-sky-600">@nafasbaru</a></p>
+      <p class="text-xs text-slate-500 mt-4">Disclaimer: Informasi di situs ini bersifat edukasi dan bukan pengganti nasihat medis profesional.</p>
+    </div>
+  </section>
+
+  <footer class="py-8 text-center text-xs text-slate-500">© <span id="year"></span> NafasBaru</footer>
+
+  <!-- Motivational Modal removed -->
+
+  <script>
+    // Helpers
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+    const store = {
+      get(k, d){ try{ return JSON.parse(localStorage.getItem(k)) ?? d }catch{ return d } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
+    };
+
+    // Single-page navigation: scroll spy + close mobile on click
+    const sections = Array.from(document.querySelectorAll('#home, #fitur, #challenge, #kesehatan, #finansial'));
+    const navLinks = Array.from(document.querySelectorAll('#navDesktop a, #mobileMenu a'));
+
+    function setActiveLink(){
+      let current = sections[0]?.id || 'home';
+      const offset = 120; // header height offset
+      const pos = window.scrollY + offset;
+      sections.forEach(sec => {
+        if (pos >= sec.offsetTop) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const target = href.startsWith('#') ? href.slice(1) : null;
+        link.classList.toggle('active', target === current);
+      });
+    }
+
+    // Close mobile menu on link click
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const panel = document.getElementById('mobileMenu');
+        const btn = document.getElementById('menuBtn');
+        if (panel && !panel.classList.contains('hidden')) { panel.classList.add('hidden'); panel.classList.remove('open'); }
+        if (btn) btn.setAttribute('aria-expanded','false');
+      });
+    });
+
+    window.addEventListener('scroll', setActiveLink, { passive: true });
+    window.addEventListener('load', setActiveLink);
+
+    // Dark mode toggle
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = store.get('nb_theme', prefersDark ? 'dark' : 'light');
+    setTheme(savedTheme);
+    $('#darkToggle').addEventListener('click', ()=> setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
+    function setTheme(mode){
+      document.documentElement.classList.toggle('dark', mode==='dark');
+      document.documentElement.classList.toggle('light', mode!=='dark');
+      // also toggle body class for compatibility
+      document.body.classList.toggle('dark-mode', mode==='dark');
+      // update toggle icons
+      $$('.theme-icon').forEach(el=>{
+        const t = el.getAttribute('data-theme');
+        const shouldShow = (t==='dark' && mode==='dark') || (t==='light' && mode!=='dark');
+        el.classList.toggle('hidden', !shouldShow);
+      });
+      store.set('nb_theme', mode);
+    }
+
+    // Mobile menu (slide/fade + aria-expanded)
+    (function(){
+      const btn = $('#menuBtn');
+      const panel = $('#mobileMenu');
+      if (!btn || !panel) return;
+      btn.addEventListener('click', ()=>{
+        const willOpen = panel.classList.contains('hidden');
+        panel.classList.toggle('hidden');
+        panel.classList.toggle('open', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+    })();
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('active'); observer.unobserve(e.target); }
+      })
+    }, { threshold: 0.12 });
+    $$('.reveal').forEach(el=> observer.observe(el));
+
+    // Challenge
+    const DUR = [1,3,5,7,14,30];
+    let challenge = store.get('nb_challenge', { durationDays: 0, progressDays: 0 });
+    let selected = challenge.durationDays || 7;
+    function renderDur(){
+      const wrap = $('#durationWrap'); wrap.innerHTML='';
+      DUR.forEach(d=>{
+        const btn = document.createElement('button');
+        btn.className = 'px-4 py-2 rounded-xl border bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 ' + (selected===d? 'ring-2 ring-sky-400' : '');
+        btn.textContent = d + ' hari';
+        btn.onclick = ()=>{ selected=d; updateChallengeUI(); };
+        wrap.appendChild(btn);
+      })
+    }
+    function start(){ challenge = { durationDays: selected, progressDays: 0 }; store.set('nb_challenge', challenge); updateChallengeUI(); }
+    function progress(){ if(!challenge.durationDays) return; if(challenge.progressDays>=challenge.durationDays) return; challenge.progressDays++; store.set('nb_challenge', challenge); updateChallengeUI(); }
+    function reset(){ challenge = { durationDays: 0, progressDays: 0 }; store.set('nb_challenge', challenge); selected=7; updateChallengeUI(); }
+    function updateChallengeUI(){
+      renderDur();
+      $('#durText').textContent = challenge.durationDays? (challenge.durationDays+' hari') : selected+' (belum mulai)';
+      $('#progText').textContent = challenge.durationDays? `${challenge.progressDays}/${challenge.durationDays} hari` : '0/0 hari';
+      const pct = challenge.durationDays? Math.min(100, Math.round(challenge.progressDays*100/challenge.durationDays)) : 0;
+      $('#progFill').style.width = pct + '%';
+      const status = !challenge.durationDays ? 'Status: belum aktif' : (challenge.progressDays>=challenge.durationDays ? 'Status: selesai' : 'Status: aktif');
+      const st = $('#ch_status'); if (st) st.textContent = status;
+    }
+    const __sb = document.getElementById('startBtn'); if (__sb) __sb.addEventListener('click', start);
+    const __pb = document.getElementById('progressBtn'); if (__pb) __pb.addEventListener('click', progress);
+    const __rb = document.getElementById('resetBtn'); if (__rb) __rb.addEventListener('click', reset);
+
+    // Money & Chart
+    let chart;
+    function calcMoney(){
+      const daily = Number($('#daily').value||0);
+      const price = Number($('#price').value||0);
+      const cppRaw = Number($('#cpp').value||20);
+      const cpp = cppRaw > 0 ? cppRaw : 20; // guard invalid/zero cpp
+      const dateVal = $('#qdate').value;
+      let days=0, saved=0;
+      if(dateVal){ const diff = Date.now() - new Date(dateVal).getTime(); days = Math.max(0, Math.floor(diff/86400000)); const packs = cpp? daily/cpp:0; saved = Math.round(days*packs*price); }
+      $('#days').textContent = days; $('#saved').textContent = saved.toLocaleString('id-ID');
+      // Build simple series for chart (linear estimate)
+      const labels = Array.from({length: Math.min(30, Math.max(1, days||7))}, (_,i)=> 'Hari '+(i+1));
+      const perDay = (cpp? (daily/cpp)*price : 0);
+      const data = labels.map((_,i)=> Math.round(perDay*(i+1)));
+      renderChart(labels, data);
+      // Store with consistent key 'date' and keep 'qdate' for backward compatibility
+      store.set('nb_money', { daily, price, cpp, date: dateVal, qdate: dateVal });
+    }
+    function renderChart(labels, data){
+      const ctx = document.getElementById('moneyChart');
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line', data: { labels, datasets: [{ label: 'Hemat (IDR)', data, fill: true, borderColor: '#4CAF50', backgroundColor: 'rgba(76,175,80,.15)', tension: .25 }] },
+        options: { responsive: true, plugins: { legend: { display: true } }, scales: { y: { ticks: { callback: v=> v.toLocaleString('id-ID') } } } }
+      });
+    }
+    $('#calcBtn').addEventListener('click', calcMoney);
+    function loadMoney(){
+      const s=store.get('nb_money', null); if(!s) return;
+      $('#daily').value=s.daily||''; $('#price').value=s.price||''; $('#cpp').value=s.cpp||20;
+      const effectiveDate = s.date || s.qdate || '';
+      if (!s.date && s.qdate) { store.set('nb_money', { ...s, date: s.qdate }); }
+      if (effectiveDate) $('#qdate').value=effectiveDate;
+    }
+
+    // ===== Health Tracking Logic (minimal, interactive) =====
+    function healthTarget(){ const ch = store.get('nb_challenge', null); return ch?.durationDays || 30; }
+    function calcDaysSinceQuit(){ const m = store.get('nb_money', null); const dt = m?.date || m?.qdate; if (dt) { const diff = Date.now() - new Date(dt).getTime(); return Math.max(0, Math.floor(diff/86400000)); } return store.get('ht_manualDays', 0); }
+    function setManualDays(d){ store.set('ht_manualDays', d); }
+
+    function simpleTip(day){
+      if (day>=14) return 'Coba meditasi singkat untuk jaga konsistensi.';
+      if (day>=7) return 'Olahraga ringan bantu paru-paru makin kuat.';
+      if (day>=3) return 'Minum air hangat dan peregangan ringan.';
+      if (day>=1) return 'Tarik napas dalam dan jalan 10 menit.';
+      return 'Minum banyak air hari ini.';
+    }
+
+    function estimateSavedFromLocal(days){
+      const m = store.get('nb_money', null);
+      if (!m) return 0;
+      const daily = Number(m.daily||0), price = Number(m.price||0), cpp = Number(m.cpp||20)||20;
+      const perDay = cpp ? (daily/cpp)*price : 0;
+      return Math.round(perDay * days);
+    }
+
+    async function fetchLogsIfPossible(){
+      try{
+        const token = localStorage.getItem('authToken');
+        const user = JSON.parse(localStorage.getItem('user')||'null');
+        if(!token || !user?.id) return null;
+        const res = await fetch(`/api/health/${user.id}`, { headers: { 'Authorization':`Bearer ${token}` } });
+        if(!res.ok) return null;
+        const data = await res.json();
+        return data?.logs || [];
+      }catch{ return null }
+    }
+
+    async function persistHealthIfPossible(){
+      try{
+        const token = localStorage.getItem('authToken');
+        const user = JSON.parse(localStorage.getItem('user')||'null');
+        if(!token || !user?.id) return { ok:false };
+        const resp = await fetch(`/api/health/${user.id}/progress`, { method:'POST', headers: { 'Authorization':`Bearer ${token}` } });
+        if (resp.status===409) { showToast('⚠️ Anda sudah mengupdate progres hari ini.'); return { duplicated: true }; }
+        if (!resp.ok) return { ok:false };
+        const body = await resp.json();
+        return { ok:true, ...body };
+      }catch{ return { ok:false } }
+    }
+
+    async function getDaysFromBackendFallback(localDays){
+      try{
+        const token = localStorage.getItem('authToken');
+        const user = JSON.parse(localStorage.getItem('user')||'null');
+        if(token && user?.id){
+          const res = await fetch(`/api/health/${user.id}/progress`, { headers: { 'Authorization':`Bearer ${token}` } });
+          if(res.ok){ const data = await res.json(); return data?.daysSince ?? localDays; }
+        }
+      }catch{}
+      return localDays;
+    }
+
+    async function renderHealth(){
+      // compute days (backend if available)
+      let days = calcDaysSinceQuit();
+      days = await getDaysFromBackendFallback(days);
+
+      // UI basics
+      const target = healthTarget();
+      const pct = Math.max(0, Math.min(100, Math.round((days/target)*100)));
+      $('#ht_days') && ($('#ht_days').textContent = days);
+      $('#ht_bar') && ($('#ht_bar').style.width = pct+'%');
+      $('#ht_message') && ($('#ht_message').textContent = days>=3? 'Pernapasan lebih lega' : days>=1? 'Detak jantung mulai normal' : 'Mulai hari ini lebih baik');
+      $('#ht_tip') && ($('#ht_tip').textContent = simpleTip(days));
+      $('#ht_target') && ($('#ht_target').textContent = target);
+      $('#ht_saved') && ($('#ht_saved').textContent = estimateSavedFromLocal(days).toLocaleString('id-ID'));
+
+      // Logs and success count
+      const fillLogs = (logs)=>{
+        const ul = document.getElementById('ht_log'); if (!ul) return; ul.innerHTML='';
+        (logs||[]).slice().reverse().forEach(l=>{
+          const li=document.createElement('li');
+          const d = new Date(l.dateUpdated||Date.now());
+          li.textContent = `Hari ${l.day} → ${l.progressStatus==='success'?'berhasil':'skip'} (${d.toLocaleDateString('id-ID')})`;
+          ul.appendChild(li);
+        });
+        const succ = (logs||[]).filter(x=> x.progressStatus==='success').length;
+        const se = document.getElementById('ht_success'); if (se) se.textContent = succ;
+      };
+      let logs = await fetchLogsIfPossible();
+      if (!logs) logs = store.get('ht_logs', []);
+      fillLogs(logs);
+
+      // Hook update button
+      const up = document.getElementById('ht_update');
+      if (up) {
+        up.onclick = async () => {
+          // backend-first
+          const result = await persistHealthIfPossible();
+          if (result?.duplicated) return; // toast already shown
+          if (result?.ok) {
+            showToast('✅ Progress hari ini berhasil diperbarui!');
+            // advance challenge progress if active
+            const ch = store.get('nb_challenge', null);
+            if (ch?.durationDays && ch.progressDays < ch.durationDays) { ch.progressDays++; store.set('nb_challenge', ch); updateChallengeUI(); }
+            await renderHealth();
+            return;
+          }
+
+          // local fallback (no auth)
+          const m = store.get('nb_money', null);
+          if (!m?.date) { const cur = store.get('ht_manualDays', 0); setManualDays(cur+1); }
+          const localLogs = store.get('ht_logs', []);
+          const nextDay = (localLogs[localLogs.length-1]?.day||0)+1;
+          // prevent duplicate for same calendar day locally
+          const today = new Date().toDateString();
+          const hasToday = localLogs.some(x=> new Date(x.dateUpdated).toDateString()===today);
+          if (hasToday) { showToast('⚠️ Anda sudah mengupdate progres hari ini.'); return; }
+          localLogs.push({ day: nextDay, progressStatus:'success', dateUpdated: new Date().toISOString() });
+          store.set('ht_logs', localLogs);
+          // advance challenge if active
+          const ch = store.get('nb_challenge', null);
+          if (ch?.durationDays && ch.progressDays < ch.durationDays) { ch.progressDays++; store.set('nb_challenge', ch); updateChallengeUI(); }
+          showToast('✅ Progress hari ini berhasil diperbarui!');
+          await renderHealth();
+        };
+      }
+    }
+
+    function showToast(text){ const t=document.getElementById('toast'); if(!t) return; t.textContent=text; t.classList.remove('hidden'); setTimeout(()=> t.classList.add('hidden'), 1800); }
+
+    // Motivational popup removed
+
+    // Contact form handler (localStorage demo)
+    function initContactForm(){
+      const form = document.getElementById('contactForm');
+      if (!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('cf_name').value.trim();
+        const email = document.getElementById('cf_email').value.trim();
+        const msg = document.getElementById('cf_msg').value.trim();
+        if (!name || !email || !msg) return;
+        const all = store.get('nb_contacts', []);
+        all.push({ name, email, msg, at: new Date().toISOString() });
+        store.set('nb_contacts', all);
+        const status = document.getElementById('cf_status');
+        if (status) status.classList.remove('hidden');
+        form.reset();
+      });
+    }
+
+    // Init
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (document.getElementById('durationWrap')) { renderDur(); updateChallengeUI(); }
+    loadMoney();
+    setActiveLink();
+    initContactForm();
+    renderHealth();
+  </script>
 </body>
 </html>
